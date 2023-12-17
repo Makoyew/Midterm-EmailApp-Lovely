@@ -43,11 +43,20 @@
                             <i class="fas fa-store"></i> Boutique
                         </a>
                     </li>
+
+                    @role('admin')
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url('/logs') }}" style="color: white;">
                             <i class="fas fa-book"></i> Logs
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('confirmation.index') }}" style="color: white;">
+                            <i class="fa-regular fa-square-check"></i> Confirmation
+                        </a>
+                    </li>
+                    @endrole
+
                     <li class="nav-item">
                         <form action="{{ url('/logout') }}" method="POST">
                             {{ csrf_field() }}

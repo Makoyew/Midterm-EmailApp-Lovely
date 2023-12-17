@@ -30,3 +30,13 @@ Route::get('/verification/{user}/{token}', [AuthController::class, 'verification
 
 Route::resource('boutique', BoutiqueController::class);
 Route::get('/logs', [LogController::class, 'index'])->name('logs.index');
+
+Route::post('/boutique/reserve/{boutique}', [BoutiqueController::class, 'reserve'])->name('boutique.reserve');
+Route::get('/confirmation', [BoutiqueController::class, 'showConfirmation'])->name('confirmation.index');
+
+Route::put('/accept-reservation/{boutique}', [BoutiqueController::class, 'acceptReservation'])->name('accept.reservation');
+Route::put('/reject-reservation/{boutique}', [BoutiqueController::class, 'rejectReservation'])->name('reject.reservation');
+// Route::delete('/remove-reservation/{boutique}', [BoutiqueController::class, 'removeReservation'])->name('remove.reservation');
+
+
+

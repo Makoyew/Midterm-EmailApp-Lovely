@@ -10,6 +10,7 @@ class Boutique extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name', 'description', 'price', 'image',
+        'name', 'description', 'price', 'image', 'is_reserved', 'is_accepted',
+        'is_rejected',
     ];
 }

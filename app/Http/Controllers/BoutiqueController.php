@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Events\UserLog;
 use App\Models\Boutique;
 use Illuminate\Http\Request;
+use App\Notifications\ReservationAccepted;
+use App\Notifications\ReservationRejected;
+use Illuminate\Support\Facades\Notification;
 
 class BoutiqueController extends Controller
 {
@@ -73,4 +76,45 @@ class BoutiqueController extends Controller
 
         return redirect()->route('boutique.index')->with('error','Flower deleted successfully');
     }
+
+    public function reserve(Boutique $boutique) {
+        // Logic to handle the boutique reservation
+        $boutique->is_reserved = true; // Assuming you have a boolean field in the Boutique model
+        $boutique->save();
+
+        return redirect()->route('boutique.index', $boutique)->with('success', 'Boutique reserved successfully!');
+    }
+
+    public function showConfirmation() {
+        $reservedBoutiques = Boutique::where('is_reserved', true)->get();
+        return view('boutique.confirmation', compact('reservedBoutiques'));
+    }
+
+    public function acceptReservation(Boutique $boutique) {
+        $boutique->is_accepted = true;
+        $boutique->is_rejected = false; // Reset rejection status if needed
+        $boutique->save();
+
+        $user = auth()->user();
+        $user->notify(new ReservationAccepted($boutique->id));
+
+        return redirect()->back()->with('success', 'Reservation accepted successfully!');
+    }
+
+    public function rejectReservation(Boutique $boutique) {
+        $boutique->is_accepted = false;
+        $boutique->is_rejected = true;
+        $boutique->save();
+
+        $user = auth()->user();
+        $user->notify(new ReservationRejected($boutique->id));
+
+        return redirect()->back()->with('success', 'Reservation rejected successfully!');
+    }
+
+
+
+
+
+
 }

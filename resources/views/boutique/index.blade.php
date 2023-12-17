@@ -6,9 +6,11 @@
         <div class="col-md-12">
             <div class="d-flex justify-content-between align-items-center mb-5">
                 <h1 class="text-white" style="font-family: 'Playfair Display', serif; font-size: 36px; font-weight: bold;">Flower Boutique</h1>
+                @role('admin')
                 <a class="btn btn-info text-white" href="{{ route('boutique.create') }}">
                     <i class="fas fa-plus-circle"></i> Add New Flower
                 </a>
+                @endrole
             </div>
 
             @if (session('success'))
@@ -47,6 +49,7 @@
                                         <td class="text-center">{{ $flower->description }}</td>
                                         <td class="text-center">${{ $flower->price }}</td>
                                         <td class="text-center">
+                                            @role('admin')
                                             <form action="{{ route('boutique.destroy', $flower->id) }}" method="POST">
                                                 <a class="btn btn-outline-primary" href="{{ route('boutique.edit', $flower->id) }}">
                                                     <i class="fas fa-edit"></i> <!-- Edit Icon -->
@@ -57,6 +60,17 @@
                                                     <i class="fas fa-trash-alt"></i> <!-- Delete Icon -->
                                                 </button>
                                             </form>
+                                            @endrole
+
+                                            @role('user')
+                                                <form action="{{ route('boutique.reserve', $flower->id) }}" method="POST">
+                                                    @csrf
+                                                    <button type="submit" class="btn btn-success">
+                                                        Reserve
+                                                    </button>
+                                                </form>
+                                            @endrole
+
                                         </td>
                                     </tr>
                                 @endforeach
